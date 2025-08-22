@@ -7,29 +7,77 @@ format:
 
 ```{=html}
 <div style="text-align: center; padding: 20px; font-family: Arial;">
-    <p id="message">Checking your browser...</p>
+    <p id="message">Preparing your survey...</p>
     
     <script>
-        // Prevent multiple redirects
-        if (window.location.href.includes('?redirected')) {
-            document.getElementById('message').innerHTML = 'Click the link below to access the survey:<br><br><a href="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" style="background: #007cba; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px;">Go to Survey</a>';
+        // Comprehensive in-app browser detection
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        
+        const isInAppBrowser = 
+            /FBAN|FBAV/.test(userAgent) ||  // Facebook
+            /Instagram/.test(userAgent) ||   // Instagram
+            /Twitter/.test(userAgent) ||     // Twitter
+            /LinkedInApp/.test(userAgent) || // LinkedIn
+            /KAKAOTALK/.test(userAgent) ||   // KakaoTalk
+            /Slack/.test(userAgent) ||       // Slack
+            /SlackClient/.test(userAgent) || // Slack desktop
+            /Airship/.test(userAgent) ||     // Airship (some email apps)
+            /ProtonMail/.test(userAgent) ||  // ProtonMail
+            /Outlook/.test(userAgent) ||     // Outlook app
+            /Gmail/.test(userAgent) ||       // Gmail app
+            /YahooMail/.test(userAgent) ||   // Yahoo Mail
+            /Spark/.test(userAgent) ||       // Spark email
+            /MailApp/.test(userAgent) ||     // Generic mail app
+            /Edison/.test(userAgent) ||      // Edison Mail
+            /Newton/.test(userAgent) ||      // Newton Mail
+            /wv/.test(userAgent) ||          // Generic WebView
+            /Version\/[\d.]+.*Safari/.test(userAgent) === false && /Safari/.test(userAgent) || // Chrome on iOS in app
+            (navigator.standalone !== undefined); // iOS WebView
+        
+        // Show instructions to all users with specific app guidance
+        let instructions = `<p><strong>For the best survey experience, please open this in your browser app:</strong></p>`;
+        
+        // Add specific instructions based on detected app
+        if (/Slack/.test(userAgent)) {
+            instructions += `
+                <div style="background: #e8f5e8; padding: 15px; margin: 20px 0; border-radius: 5px;">
+                    <strong>🟢 From Slack:</strong><br>
+                    1. Tap the link<br>
+                    2. Choose "Open in Browser" when prompted<br>
+                    3. Or tap the ⋯ menu and select "Open in default browser"
+                </div>`;
+        } else if (/Outlook|Gmail|YahooMail|Spark|Edison|Newton|MailApp/.test(userAgent)) {
+            instructions += `
+                <div style="background: #e8f0ff; padding: 15px; margin: 20px 0; border-radius: 5px;">
+                    <strong>📧 From Email App:</strong><br>
+                    1. Tap the ⋯ or Share button<br>
+                    2. Select "Open in Browser" or "Open in Safari/Chrome"<br>
+                    3. Or copy the link and paste it in your browser app
+                </div>`;
+        } else if (/FBAN|FBAV|Instagram|Twitter|LinkedIn/.test(userAgent)) {
+            instructions += `
+                <div style="background: #fff3e0; padding: 15px; margin: 20px 0; border-radius: 5px;">
+                    <strong>📱 From Social Media App:</strong><br>
+                    1. Tap the ⋯ or Share button<br>
+                    2. Select "Open in Browser"<br>
+                    3. Choose your preferred browser (Safari, Chrome, etc.)
+                </div>`;
         } else {
-            const isInAppBrowser = /FBAN|FBAV|Instagram|TwitterAndroid|Line\/|wv/.test(navigator.userAgent);
-            
-            if (isInAppBrowser) {
-                document.getElementById('message').innerHTML = 
-                    `<strong>Please open in your browser app:</strong><br><br>
-                    1. Tap the ⋯ menu button<br>
-                    2. Select "Open in Browser"<br><br>
-                    <a href="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" style="background: #007cba; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px;">Continue to Survey</a>`;
-            } else {
-                // Add parameter to prevent loop and redirect
-                window.location.href = window.location.href + '?redirected=true';
-                setTimeout(() => {
-                    window.location.href = 'https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi';
-                }, 1000);
-            }
+            instructions += `
+                <div style="background: #f5f5f5; padding: 15px; margin: 20px 0; border-radius: 5px;">
+                    <strong>📱 On Mobile:</strong><br>
+                    1. Tap the ⋯ or Share button<br>
+                    2. Select "Open in Browser" or "Open in Safari/Chrome"<br><br>
+                    <strong>💻 On Desktop:</strong><br>
+                    Copy this link and paste it in a new browser tab
+                </div>`;
         }
+        
+        instructions += `
+            <a href="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" style="background: #007cba; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; margin: 10px;">Open Survey</a><br><br>
+            <small style="color: #666;">Survey Link: https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi</small>`;
+        
+        document.getElementById('message').innerHTML = instructions;
     </script>
 </div>
 ```

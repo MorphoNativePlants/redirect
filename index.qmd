@@ -7,60 +7,70 @@ format:
 
 ```{=html}
 <div style="text-align: center; padding: 20px; font-family: Arial;">
-    <h2>📋 Survey Access</h2>
-    <p id="message">Preparing your survey...</p>
+    <p><strong>For the survey to display properly, please open the webpage in your browser app (Chrome, Safari, etc.)</strong></p>
+    <p id="message">Loading...</p>
+    
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     
     <script>
-        // Enhanced detection based on StackOverflow solution
-        var standalone = window.navigator.standalone,
-            userAgent = window.navigator.userAgent.toLowerCase(),
-            safari = /safari/.test(userAgent),
-            ios = /iphone|ipod|ipad/.test(userAgent);
+        const userAgent = navigator.userAgent;
+        const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+        const isIOS = /iPad|iPhone|iPod/.test(userAgent);
+        const isAndroid = /Android/.test(userAgent);
         
-        // Additional comprehensive detection
+        // Detect in-app browsers
         const isInAppBrowser = 
-            // iOS detection
-            (ios && !standalone && safari) ||  // Safari in-app
-            (ios && !standalone && !safari) || // iOS webview
-            // Android detection
-            userAgent.includes('wv') ||        // Android webview
-            // App-specific detection
-            /fban|fbav/.test(userAgent) ||     // Facebook
-            /instagram/.test(userAgent) ||      // Instagram
-            /twitter/.test(userAgent) ||        // Twitter
-            /linkedin/.test(userAgent) ||       // LinkedIn
-            /slack/.test(userAgent) ||          // Slack
-            /outlook/.test(userAgent) ||        // Outlook
-            /gmail/.test(userAgent) ||          // Gmail
-            /yahoomail/.test(userAgent) ||      // Yahoo Mail
-            /spark/.test(userAgent) ||          // Spark email
-            /edison/.test(userAgent) ||         // Edison Mail
-            /newton/.test(userAgent);           // Newton Mail
+            /FBAN|FBAV|Instagram|TwitterAndroid|Line\/|wv|Slack|Outlook|Gmail/.test(userAgent) ||
+            (isIOS && !window.navigator.standalone && !/Safari/.test(userAgent)) ||
+            (isAndroid && /wv/.test(userAgent));
         
-        let instructions = `<p><strong>For the best survey experience, please open this in your browser app:</strong></p>`;
+        let message = '';
         
-        if (isInAppBrowser) {
-            instructions += `
-                <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; margin: 20px 0; border-radius: 5px;">
-                    <strong>⚠️ You're in an in-app browser</strong><br><br>
-                    <strong>To open in your full browser:</strong><br>
-                    1. Look for ⋯ or Share button<br>
-                    2. Select "Open in Browser" or "Open in Safari/Chrome"<br>
-                    3. Or copy the link below and paste it in your browser app
+        if (isMobile && isInAppBrowser) {
+            if (isIOS) {
+                message = `
+                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; margin: 20px 0; border-radius: 8px;">
+                        <strong>⚠️ Please open in Safari</strong><br><br>
+                        Tap the Safari icon to open in your browser:<br>
+                        <i class="bi bi-safari" style="font-size: 2rem; color: #007AFF; margin: 10px;"></i><br>
+                        <small>Look for the share button or "Open in Safari"</small>
+                    </div>`;
+            } else if (isAndroid) {
+                message = `
+                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; margin: 20px 0; border-radius: 8px;">
+                        <strong>⚠️ Please open in Chrome</strong><br><br>
+                        This is a Chrome Custom Tab. Tap the menu (⋯) and select:<br>
+                        <strong>"Open in Chrome"</strong><br>
+                        <i class="bi bi-google" style="font-size: 2rem; color: #4285F4; margin: 10px;"></i>
+                    </div>`;
+            }
+        } else if (isMobile) {
+            message = `
+                <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; margin: 20px 0; border-radius: 8px;">
+                    <strong>✅ You're in a full browser - perfect!</strong>
                 </div>`;
         } else {
-            instructions += `
-                <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; margin: 20px 0; border-radius: 5px;">
-                    <strong>✅ You're in a full browser - great!</strong><br>
-                    Click the button below to access the survey.
+            message = `
+                <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; margin: 20px 0; border-radius: 8px;">
+                    <strong>✅ Desktop browser detected</strong>
                 </div>`;
         }
         
-        instructions += `
-            <a href="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" style="background: #007cba; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; margin: 10px;">Open Survey</a><br><br>
-            <small style="color: #666;">Survey Link: https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi</small>`;
+        message += `
+            <a href="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" 
+               style="background: #007cba; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; margin: 10px; display: inline-block;">
+               Open Survey
+            </a><br><br>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+                <small><strong>Copy and paste this link:</strong></small><br>
+                <input type="text" value="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" 
+                       readonly style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 3px; font-size: 12px;"
+                       onclick="this.select();">
+            </div>`;
         
-        document.getElementById('message').innerHTML = instructions;
+        document.getElementById('message').innerHTML = message;
     </script>
 </div>
 ```

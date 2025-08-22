@@ -46,47 +46,75 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div style="text-align: center; padding: 20px; font-family: Arial;">
-    <p><strong>For the survey to display properly, please open the webpage in your browser app (Chrome, Safari, etc.)</strong></p>
-    <p id="message">Loading...</p>
-    
-    <script>
-        const userAgent = navigator.userAgent;
-        const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-        
-        let message = '';
-        let buttonText = '';
-        
-        if (isMobile) {
-            message = `
-                <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; margin: 20px 0; border-radius: 8px;">
-                    <strong>If you are viewing this on a mobile device, please open it in a browser app</strong>
-                </div>`;
-            buttonText = "I'm in a browser app - continue";
-        } else {
-            message = `
-                <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; margin: 20px 0; border-radius: 8px;">
-                    <strong>✅ Desktop browser</strong>
-                </div>`;
-            buttonText = "Go to survey";
-        }
-        
-        message += `
-            <a href="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" 
-               style="background: #007cba; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; margin: 10px; display: inline-block;">
-               ${buttonText}
-            </a><br><br>
-            
-            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
-                <small><strong>Copy and paste this link:</strong></small><br>
-                <input type="text" value="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" 
-                       readonly style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 3px; font-size: 12px;"
-                       onclick="this.select();">
-            </div>`;
-        
-        document.getElementById('message').innerHTML = message;
-    </script>
+<div style="text-align: center; padding: 40px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;">
+   
+   <p style="font-size: 1.2rem; color: #2c3e50; margin-bottom: 30px; font-weight: 600;">
+       <strong>For the survey to display properly, please open the webpage in your browser app (Chrome, Safari, etc.)</strong>
+   </p>
+   
+   <div style="background: #fff3cd; border-radius: 8px; padding: 24px; margin: 24px 0; border-left: 4px solid #ffc107;">
+       <p style="margin: 0 0 12px 0; font-weight: 600; color: #856404;">
+           📱 <strong>If you are on a mobile device:</strong> Copy and paste the link below into a new browser tab.
+       </p>
+       <p style="margin: 0; font-weight: 600; color: #856404;">
+           💻 <strong>If you are on desktop:</strong> Click the button below.
+       </p>
+   </div>
+   
+   <a href="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" style="background: #007cba; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; margin: 10px; display: inline-block;">
+      Continue
+   </a><br><br>
+   
+   <div style="background: #f8f9fa; border-radius: 8px; padding: 24px; margin: 30px 0; border: 1px solid #e9ecef;">
+       <p style="margin: 0 0 12px 0; font-weight: 600; color: #495057; font-size: 0.9rem;">
+           📋 <strong>Copy and paste this link:</strong>
+       </p>
+       <div style="display: flex; align-items: center; gap: 12px;">
+           <input type="text" id="linkField" value="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" readonly="" style="flex: 1; 
+                               padding: 12px; 
+                               border: 2px solid #dee2e6; 
+                               border-radius: 6px; 
+                               font-size: 0.9rem; 
+                               background: white;
+                               color: #495057;">
+           <button onclick="copyLink()" style="background: #28a745; 
+                          color: white; 
+                          border: none; 
+                          padding: 8px 12px; 
+                          border-radius: 3px; 
+                          cursor: pointer;">
+               copy
+           </button>
+       </div>
+   </div>
 </div>
+
+<script>
+   function copyLink() {
+       const linkField = document.getElementById('linkField');
+       linkField.select();
+       linkField.setSelectionRange(0, 99999);
+       
+       try {
+           document.execCommand('copy');
+           const button = event.target;
+           const originalText = button.textContent;
+           button.textContent = 'copied!';
+           setTimeout(() => {
+               button.textContent = originalText;
+           }, 2000);
+       } catch (err) {
+           navigator.clipboard.writeText(linkField.value).then(() => {
+               const button = event.target;
+               const originalText = button.textContent;
+               button.textContent = 'copied!';
+               setTimeout(() => {
+                   button.textContent = originalText;
+               }, 2000);
+           });
+       }
+   }
+</script>
 
 </main>
 <!-- /main column -->

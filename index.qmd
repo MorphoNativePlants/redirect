@@ -12,24 +12,10 @@ format:
        <strong>For the survey to display properly, please open the webpage in your browser app (Chrome, Safari, etc.)</strong>
    </p>
    
-   <div style="background: #fff3cd; border-radius: 8px; padding: 24px; margin: 24px 0; border-left: 4px solid #ffc107;">
-       <p style="margin: 0 0 12px 0; font-weight: 600; color: #856404;">
-           📱 <strong>If you are on a mobile device:</strong> Copy and paste the link below into a new browser tab.
-       </p>
-       <p style="margin: 0; font-weight: 600; color: #856404;">
-           💻 <strong>If you are on desktop:</strong> Click the link below.
-       </p>
-   </div>
-   
-   <a href="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" 
-      style="background: #007cba; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; margin: 10px; display: inline-block;">
-      Continue
-   </a><br><br>
-   
-   <p style="margin: 0 0 12px 0; font-weight: 600; color: #495057; font-size: 0.9rem;">
-       📋 <strong>Copy and paste this link:</strong>
+   <p style="margin: 0 0 12px 0; font-weight: 600; color: #2c3e50;">
+       📱 <strong>If you are on a mobile device:</strong> Copy and paste the link below into a new browser tab.
    </p>
-   <div style="display: flex; align-items: center; gap: 12px; margin-top: 5px;">
+   <div style="display: flex; align-items: center; gap: 12px; margin: 0 0 30px 0;">
        <input type="text" id="linkField" value="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" 
               readonly style="flex: 1; 
                            padding: 8px; 
@@ -46,6 +32,15 @@ format:
            copy
        </button>
    </div>
+   
+   <p style="margin: 0 0 12px 0; font-weight: 600; color: #2c3e50;">
+       💻 <strong>If you are on desktop:</strong> Click the link below.
+   </p>
+   
+   <a href="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" 
+      style="background: #007cba; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; margin: 10px; display: inline-block;">
+      Continue
+   </a>
 </div>
 
 <script>

@@ -15,23 +15,26 @@ format:
         const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
         
         let message = '';
+        let buttonText = '';
         
         if (isMobile) {
             message = `
                 <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; margin: 20px 0; border-radius: 8px;">
                     <strong>If you are viewing this on a mobile device, please open it in a browser app</strong>
                 </div>`;
+            buttonText = "I'm in a browser app - continue";
         } else {
             message = `
                 <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; margin: 20px 0; border-radius: 8px;">
                     <strong>✅ Desktop browser</strong>
                 </div>`;
+            buttonText = "Go to survey";
         }
         
         message += `
             <a href="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" 
                style="background: #007cba; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; margin: 10px; display: inline-block;">
-               I'm in a browser app - Continue
+               ${buttonText}
             </a><br><br>
             
             <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">

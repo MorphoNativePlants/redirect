@@ -59,15 +59,9 @@ ul.task-list li input[type="checkbox"] {
         const isIOS = /iPad|iPhone|iPod/.test(userAgent);
         const isAndroid = /Android/.test(userAgent);
         
-        // Detect in-app browsers
-        const isInAppBrowser = 
-            /FBAN|FBAV|Instagram|TwitterAndroid|Line\/|wv|Slack|Outlook|Gmail/.test(userAgent) ||
-            (isIOS && !window.navigator.standalone && !/Safari/.test(userAgent)) ||
-            (isAndroid && /wv/.test(userAgent));
-        
         let message = '';
         
-        if (isMobile && isInAppBrowser) {
+        if (isMobile) {
             if (isIOS) {
                 message = `
                     <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; margin: 20px 0; border-radius: 8px;">
@@ -80,20 +74,23 @@ ul.task-list li input[type="checkbox"] {
                 message = `
                     <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; margin: 20px 0; border-radius: 8px;">
                         <strong>⚠️ Please open in Chrome</strong><br><br>
-                        This is a Chrome Custom Tab. Tap the menu (⋯) and select:<br>
+                        Tap the menu (⋯) and select:<br>
                         <strong>"Open in Chrome"</strong><br>
                         <i class="bi bi-google" style="font-size: 2rem; color: #4285F4; margin: 10px;"></i>
                     </div>`;
+            } else {
+                // Other mobile devices
+                message = `
+                    <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; margin: 20px 0; border-radius: 8px;">
+                        <strong>⚠️ Please open in your browser</strong><br><br>
+                        Look for a menu or share button and select:<br>
+                        <strong>"Open in Browser"</strong>
+                    </div>`;
             }
-        } else if (isMobile) {
-            message = `
-                <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; margin: 20px 0; border-radius: 8px;">
-                    <strong>✅ You're in a full browser - perfect!</strong>
-                </div>`;
         } else {
             message = `
                 <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; margin: 20px 0; border-radius: 8px;">
-                    <strong>✅ Desktop browser detected</strong>
+                    <strong>✅ Desktop browser</strong>
                 </div>`;
         }
         

@@ -1,0 +1,35 @@
+---
+format: 
+  html:
+    theme: default
+    toc: false
+---
+
+```{=html}
+<div style="text-align: center; padding: 20px; font-family: Arial;">
+    <p id="message">Checking your browser...</p>
+    
+    <script>
+        // Prevent multiple redirects
+        if (window.location.href.includes('?redirected')) {
+            document.getElementById('message').innerHTML = 'Click the link below to access the survey:<br><br><a href="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" style="background: #007cba; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px;">Go to Survey</a>';
+        } else {
+            const isInAppBrowser = /FBAN|FBAV|Instagram|TwitterAndroid|Line\/|wv/.test(navigator.userAgent);
+            
+            if (isInAppBrowser) {
+                document.getElementById('message').innerHTML = 
+                    `<strong>Please open in your browser app:</strong><br><br>
+                    1. Tap the ⋯ menu button<br>
+                    2. Select "Open in Browser"<br><br>
+                    <a href="https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi" style="background: #007cba; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px;">Continue to Survey</a>`;
+            } else {
+                // Add parameter to prevent loop and redirect
+                window.location.href = window.location.href + '?redirected=true';
+                setTimeout(() => {
+                    window.location.href = 'https://cornell.ca1.qualtrics.com/jfe/form/SV_5cqnAHFvK4k5jUi';
+                }, 1000);
+            }
+        }
+    </script>
+</div>
+```
